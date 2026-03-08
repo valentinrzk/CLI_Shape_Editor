@@ -52,6 +52,9 @@ class ListCommand(Command):
 
         shapes = self.storage.list()
 
+        if not shapes:
+            return "Список фигур пуст"
+
         return "\n".join(s.info() for s in shapes)
 
 
