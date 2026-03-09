@@ -10,11 +10,12 @@ from editor.commands import AddCommand
         ("circle", ["0", "0", "5"], "Circle"),
         ("square", ["0", "0", "10"], "Square"),
         ("rectangle", ["0", "0", "10", "5"], "Rectangle"),
+        ("ellipse", ["0", "0", "10", "5"], "Ellipse"),
     ]
 )
 def test_add_shapes_positive(storage, shape_name, args, expected_class):
     """
-    Позитивные тесты команды make для разных типов фигур.
+    Позитивные тесты команды add для разных типов фигур.
     """
     cmd = AddCommand(storage)
     result = cmd.execute([shape_name] + args)

@@ -138,3 +138,27 @@ class Rectangle(Shape):
 
     def perimeter(self) -> float:
         return 2 * (self.width + self.height)
+
+@register_shape("ellipse")
+class Ellipse(Shape):
+    """
+    Овал (эллипс).
+    """
+
+    def __init__(self, shape_id: int, center_x: float, center_y: float, x_radius: float, y_radius: float):
+        super().__init__(shape_id)
+        self.x = center_x
+        self.y = center_y
+        self.xr = x_radius
+        self.yr = y_radius
+
+    def info(self) -> str:
+        return f"Ellipse(id={self.id}, center=({self.x},{self.y}), x_radius={self.xr}, y_radius={self.yr})"
+
+    def area(self) -> float:
+        return math.pi * self.xr * self.yr
+
+    def perimeter(self) -> float:
+        # Приближенная формула для периметра эллипса
+        h = ((self.xr - self.yr) ** 2) / ((self.xr + self.yr) ** 2)
+        return math.pi * (self.xr + self.yr) * (1 + (3 * h) / (10 + math.sqrt(4 - 3 * h)))
