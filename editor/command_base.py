@@ -13,8 +13,6 @@ class Command(ABC):
     Абстрактная команда CLI.
     """
 
-    description: str = ""
-
     def __init__(self, storage: ShapeStorage):
         self.storage = storage
 

@@ -7,11 +7,19 @@ from shape.shape_base import Shape
 from shape.shape_registry import register_shape
 
 
+class ShapeSyntax:
+    """Описание синтаксиса создания фигуры."""
+    def __init__(self, command: str, description: str):
+        self.command = command
+        self.description = description
+
+
 @register_shape("point")
 class Point(Shape):
     """
     Геометрическая точка.
     """
+    syntax = ShapeSyntax("add point <x> <y>", "Создать точку с координатами x и y.")
 
     def __init__(self, x: float, y: float, id: int = None):
         """
@@ -49,6 +57,8 @@ class Line(Shape):
     """
     Геометрическая линия, отрезок, заданный двумя точками.
     """
+
+    syntax = ShapeSyntax("add line <x1> <y1> <x2> <y2>", "Создать линию с началом x1 y1 и концом x2 y2.")
 
     def __init__(self, x1: float, y1: float, x2: float, y2: float, id: int = None):
         """
@@ -109,6 +119,8 @@ class Circle(Shape):
     Окружность. Задается центром и радиусом.
     """
 
+    syntax = ShapeSyntax("add circle <x> <y> <r>", "Создать окружность с координатами x y, а также радиусом r.")
+
     def __init__(self, x: float, y: float, r: float, id: int = None):
         """
         Создание окружности.
@@ -153,6 +165,9 @@ class Square(Shape):
     Квадрат. Задан координатами левого верхнего угла и длиной стороны.
     """
 
+    syntax = ShapeSyntax("add square <x> <y> <side>",
+                         "Создать квадрат с координатами x y, а также длиной стороны side.")
+
     def __init__(self, x: float, y: float, side: float, id: int = None):
         """
         Создание квадрата.
@@ -196,6 +211,9 @@ class Rectangle(Shape):
     """
     Прямоугольник. Задан координатами левого верхнего угла, шириной и высотой.
     """
+
+    syntax = ShapeSyntax("add rectangle <x> <y> <width> <height>",
+                         "Создать прямоугольник с координатами x y, а также шириной width и высотой height.")
 
     def __init__(self, x: float, y: float, width: float, height: float, id: int = None):
         """
@@ -243,7 +261,8 @@ class Ellipse(Shape):
     """
     Овал (эллипс). Задан координатами центра и радиусами по осям X и Y.
     """
-
+    syntax = ShapeSyntax("add ellipse <x> <y> <xr> <yr>",
+                         "Создать овал с координатами x y, а также радиусами xr по оси X и yr по оси Y.")
     def __init__(self, x: float, y: float, xr: float, yr: float, id: int = None):
         """
         Создание эллипса.
