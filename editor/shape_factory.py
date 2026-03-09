@@ -32,4 +32,20 @@ class ShapeFactory:
 
         numeric_args = list(map(float, args))
 
-        return shape_class(shape_id, *numeric_args)
+        return shape_class(*numeric_args, id=shape_id)
+
+    @staticmethod
+    def create_from_dict(data: dict):
+        """
+        Создать фигуру из словаря данных (например, при загрузке из файла).
+        :param data: Словарь с данными фигуры, должен содержать ключ "type" для определения типа фигуры.
+        :return:
+        """
+        shape_type = data.pop("type")
+
+        shape_class = SHAPE_REGISTRY.get(shape_type)
+
+        if not shape_class:
+            raise ValueError(f"Неизвестный тип фигуры: {shape_type}")
+
+        return shape_class(**data)

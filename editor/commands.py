@@ -4,24 +4,43 @@
 
 from editor.command_base import Command
 from editor.command_registry import register_command, COMMAND_REGISTRY
-from editor.factory import ShapeFactory
+from shape.shape_registry import SHAPE_REGISTRY
+from editor.shape_factory import ShapeFactory
+from editor.file_service import ShapeFileService
+
+
+@register_command("help")
+class HelpCommand(Command):
+    """
+    Показать список доступных команд. Информация о командах берется из их docstring, а также из атрибута syntax для команд создания фигур.
+    """
+
+    def execute(self, args: list[str]) -> str:
+        """
+        Вывести список команд и их описание.
+        """
+        lines = ["Доступные команды:\n"]
+
+        for name, cmd_class in COMMAND_REGISTRY.items():
+            description = cmd_class.__doc__ or ""
+            description = description.strip()
+            lines.append(f"{name:<10} - {description}")
+
+        lines.append("\nСинтаксис создания фигур:\n")
+
+        for shape_name, shape_class in SHAPE_REGISTRY.items():
+            if hasattr(shape_class, 'syntax'):
+                syntax = shape_class.syntax
+                lines.append(f"{syntax.command:<30} {syntax.description}")
+
+        return "\n".join(lines)
 
 
 @register_command("add")
 class AddCommand(Command):
     """
-    Создать фигуру. Варианты использования:\n
-    add point <x> <y>\tСоздать точку с координатами x и y.\n
-    add line <x1> <y1> <x2> <y2>\tСоздать линию с началом x1 y1 и концом x2 y2.\n
-    add circle <x> <y> <r>\tСоздать окружность с координатами x y, а также радиусом r.\n
-    add square <x> <y> <side>\tСоздать квадрат с координатами x y, а также длиной стороны side.
+    Создать фигуру. Подробности создания фигур см. в разделе "Синтаксис создания фигур"
     """
-
-    description = ("Создать фигуру. Варианты использования:\n"
-                   "add point <x> <y>\tСоздать точку с координатами x и y.\n"
-                   "add line <x1> <y1> <x2> <y2>\tСоздать линию с началом x1 y1 и концом x2 y2.\n"
-                   "add circle <x> <y> <r>\tСоздать окружность с координатами x y, а также радиусом r.\n"
-                   "add square <x> <y> <side>\tСоздать квадрат с координатами x y, а также длиной стороны side.")
 
     def execute(self, args: list[str]) -> str:
 
@@ -61,7 +80,7 @@ class ListCommand(Command):
 @register_command("delete")
 class DeleteCommand(Command):
     """
-    Команда удаления фигуры.
+    Команда удаления фигуры. Синтаксис: delete <shape_id>.
     """
 
     def execute(self, args: list[str]) -> str:
@@ -75,7 +94,7 @@ class DeleteCommand(Command):
 @register_command("area")
 class AreaCommand(Command):
     """
-    Команда вычисления площади фигуры.
+    Команда вычисления площади фигуры. Синтаксис: area <shape_id>.
     """
 
     def execute(self, args: list[str]) -> str:
@@ -89,7 +108,7 @@ class AreaCommand(Command):
 @register_command("perimeter")
 class PerimeterCommand(Command):
     """
-    Команда вычисления периметра фигуры.
+    Команда вычисления периметра фигуры. Синтаксис: perimeter <shape_id>.
     """
 
     def execute(self, args: list[str]) -> str:
@@ -99,24 +118,57 @@ class PerimeterCommand(Command):
 
         return f"Периметр: {shape.perimeter()}"
 
-@register_command("help")
-class HelpCommand(Command):
+
+@register_command("clear")
+class ClearCommand(Command):
     """
-    Показать список доступных команд.
+    Удалить все фигуры из хранилища.
     """
 
     def execute(self, args: list[str]) -> str:
-        """
-        Вывести список команд и их описание.
-        """
 
-        lines = ["Доступные команды:\n"]
+        self.storage.clear()
 
-        for name, cmd_class in COMMAND_REGISTRY.items():
+        return "Все фигуры удалены"
 
-            description = cmd_class.__doc__ or ""
-            description = description.strip()
 
-            lines.append(f"{name:<10} - {description}")
+@register_command("save")
+class SaveCommand(Command):
+    """
+    Сохранить фигуры в файл json. Синтаксис: save <filename>.
+    """
 
-        return "\n".join(lines)
+    def execute(self, args: list[str]) -> str:
+
+        if not args:
+            raise ValueError("Не указано имя файла")
+
+        path = args[0]
+
+        if not path.endswith(".json"):
+            path += ".json"
+
+        ShapeFileService.save(self.storage, path)
+
+        return f"Фигуры сохранены в {path}"
+
+
+@register_command("load")
+class LoadCommand(Command):
+    """
+    Загрузить фигуры из файла json. Синтаксис: load <filename>. При загрузке текущий список фигур очищается, а новые фигуры загружаются из файла.
+    """
+
+    def execute(self, args: list[str]) -> str:
+
+        if not args:
+            raise ValueError("Не указано имя файла")
+
+        path = args[0]
+
+        if not path.endswith(".json"):
+            path += ".json"
+
+        ShapeFileService.load(self.storage, path)
+
+        return f"Фигуры загружены из {path}"
