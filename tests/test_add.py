@@ -9,6 +9,7 @@ from editor.commands import AddCommand
         ("line", ["0", "0", "1", "1"], "Line"),
         ("circle", ["0", "0", "5"], "Circle"),
         ("square", ["0", "0", "10"], "Square"),
+        ("rectangle", ["0", "0", "10", "5"], "Rectangle"),
     ]
 )
 def test_add_shapes_positive(storage, shape_name, args, expected_class):
