@@ -2,7 +2,7 @@ import pytest
 
 import shape.shapes
 import editor.commands
-from editor.storage import ShapeStorage
+from editor.shape_storage import ShapeStorage
 
 
 @pytest.fixture

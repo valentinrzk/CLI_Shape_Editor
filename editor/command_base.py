@@ -5,7 +5,7 @@
 """
 
 from abc import ABC, abstractmethod
-from editor.storage import ShapeStorage
+from editor.shape_storage import ShapeStorage
 
 
 class Command(ABC):

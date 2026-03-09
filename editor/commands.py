@@ -4,7 +4,7 @@
 
 from editor.command_base import Command
 from editor.command_registry import register_command, COMMAND_REGISTRY
-from editor.factory import ShapeFactory
+from editor.shape_factory import ShapeFactory
 
 
 @register_command("add")

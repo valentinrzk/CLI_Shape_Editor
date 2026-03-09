@@ -2,7 +2,7 @@
 Точка входа CLI редактора.
 """
 
-from editor.storage import ShapeStorage
+from editor.shape_storage import ShapeStorage
 from editor.command_registry import COMMAND_REGISTRY
 
 import shape.shapes

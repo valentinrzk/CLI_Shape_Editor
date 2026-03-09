@@ -44,3 +44,10 @@ class Shape(ABC):
         Вернуть периметр фигуры.
         """
         pass
+
+    @abstractmethod
+    def to_dict(self) -> dict:
+        """
+        Вернуть словарь с данными фигуры для сохранения в JSON.
+        """
+        pass
