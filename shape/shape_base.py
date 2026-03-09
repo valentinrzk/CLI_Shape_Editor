@@ -16,13 +16,13 @@ class Shape(ABC):
     который назначается хранилищем фигур.
     """
 
-    def __init__(self, shape_id: int):
+    def __init__(self, id: int):
         """
         Создание фигуры.
 
-        :param shape_id: уникальный идентификатор фигуры
+        :param id: Уникальный идентификатор фигуры
         """
-        self.id = shape_id
+        self.id = id
 
     @abstractmethod
     def info(self) -> str:

@@ -5,7 +5,30 @@
 from editor.command_base import Command
 from editor.command_registry import register_command, COMMAND_REGISTRY
 from editor.shape_factory import ShapeFactory
+from editor.file_service import ShapeFileService
 
+
+@register_command("help")
+class HelpCommand(Command):
+    """
+    Показать список доступных команд.
+    """
+
+    def execute(self, args: list[str]) -> str:
+        """
+        Вывести список команд и их описание.
+        """
+
+        lines = ["Доступные команды:\n"]
+
+        for name, cmd_class in COMMAND_REGISTRY.items():
+
+            description = cmd_class.__doc__ or ""
+            description = description.strip()
+
+            lines.append(f"{name:<10} - {description}")
+
+        return "\n".join(lines)
 
 @register_command("add")
 class AddCommand(Command):
@@ -41,7 +64,6 @@ class AddCommand(Command):
 
         return f"Создана фигура: {shape.info()}"
 
-
 @register_command("list")
 class ListCommand(Command):
     """
@@ -57,7 +79,6 @@ class ListCommand(Command):
 
         return "\n".join(s.info() for s in shapes)
 
-
 @register_command("delete")
 class DeleteCommand(Command):
     """
@@ -70,7 +91,6 @@ class DeleteCommand(Command):
         self.storage.remove(shape_id)
 
         return f"Фигура {shape_id} удалена"
-
 
 @register_command("area")
 class AreaCommand(Command):
@@ -85,7 +105,6 @@ class AreaCommand(Command):
 
         return f"Площадь: {shape.area()}"
 
-
 @register_command("perimeter")
 class PerimeterCommand(Command):
     """
@@ -99,24 +118,54 @@ class PerimeterCommand(Command):
 
         return f"Периметр: {shape.perimeter()}"
 
-@register_command("help")
-class HelpCommand(Command):
+@register_command("clear")
+class ClearCommand(Command):
     """
-    Показать список доступных команд.
+    Команда очистки всех фигур.
     """
 
     def execute(self, args: list[str]) -> str:
-        """
-        Вывести список команд и их описание.
-        """
 
-        lines = ["Доступные команды:\n"]
+        self.storage.clear()
 
-        for name, cmd_class in COMMAND_REGISTRY.items():
+        return "Все фигуры удалены"
 
-            description = cmd_class.__doc__ or ""
-            description = description.strip()
+@register_command("save")
+class SaveCommand(Command):
+    """
+    Сохранить фигуры в файл.
+    """
 
-            lines.append(f"{name:<10} - {description}")
+    def execute(self, args: list[str]) -> str:
 
-        return "\n".join(lines)
+        if not args:
+            raise ValueError("Не указано имя файла")
+
+        path = args[0]
+
+        if not path.endswith(".json"):
+            path += ".json"
+
+        ShapeFileService.save(self.storage, path)
+
+        return f"Фигуры сохранены в {path}"
+
+@register_command("load")
+class LoadCommand(Command):
+    """
+    Загрузить фигуры из файла.
+    """
+
+    def execute(self, args: list[str]) -> str:
+
+        if not args:
+            raise ValueError("Не указано имя файла")
+
+        path = args[0]
+
+        if not path.endswith(".json"):
+            path += ".json"
+
+        ShapeFileService.load(self.storage, path)
+
+        return f"Фигуры загружены из {path}"

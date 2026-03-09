@@ -13,14 +13,14 @@ class Point(Shape):
     Геометрическая точка.
     """
 
-    def __init__(self, shape_id: int, x: float, y: float):
+    def __init__(self, x: float, y: float, id: int = None):
         """
         Создание точки.
-        :param shape_id: Идентификатор фигуры
+        :param id: Идентификатор фигуры
         :param x: Координата X
         :param y: Координата Y
         """
-        super().__init__(shape_id)
+        super().__init__(id)
         self.x = x
         self.y = y
 
@@ -50,18 +50,18 @@ class Line(Shape):
     Геометрическая линия, отрезок, заданный двумя точками.
     """
 
-    def __init__(self, shape_id: int, x1: float, y1: float, x2: float, y2: float):
+    def __init__(self, x1: float, y1: float, x2: float, y2: float, id: int = None):
         """
         Создание отрезка.
 
-        :param shape_id: Идентификатор фигуры
+        :param id: Идентификатор фигуры
         :param x1: координата X первой точки
         :param y1: координата Y первой точки
         :param x2: координата X второй точки
         :param y2: координата Y второй точки
         """
 
-        super().__init__(shape_id)
+        super().__init__(id)
 
         self.x1 = x1
         self.y1 = y1
@@ -109,15 +109,15 @@ class Circle(Shape):
     Окружность. Задается центром и радиусом.
     """
 
-    def __init__(self, shape_id: int, x: float, y: float, r: float):
+    def __init__(self, x: float, y: float, r: float, id: int = None):
         """
         Создание окружности.
-        :param shape_id: Идентификатор фигуры
+        :param id: Идентификатор фигуры
         :param x: Координата X центра
         :param y: Координата Y центра
         :param r: Радиус окружности
         """
-        super().__init__(shape_id)
+        super().__init__(id)
         self.x = x
         self.y = y
         self.r = r
@@ -153,15 +153,15 @@ class Square(Shape):
     Квадрат. Задан координатами левого верхнего угла и длиной стороны.
     """
 
-    def __init__(self, shape_id: int, x: float, y: float, side: float):
+    def __init__(self, x: float, y: float, side: float, id: int = None):
         """
         Создание квадрата.
-        :param shape_id: Идентификатор фигуры
+        :param id: Идентификатор фигуры
         :param x: Координата X левого верхнего угла
         :param y:  Координата Y левого верхнего угла
         :param side: Длина стороны квадрата
         """
-        super().__init__(shape_id)
+        super().__init__(id)
         self.x = x
         self.y = y
         self.side = side
@@ -190,22 +190,23 @@ class Square(Shape):
             "side": self.side
         }
 
+
 @register_shape("rectangle")
 class Rectangle(Shape):
     """
     Прямоугольник. Задан координатами левого верхнего угла, шириной и высотой.
     """
 
-    def __init__(self, shape_id: int, x: float, y: float, width: float, height: float):
+    def __init__(self, x: float, y: float, width: float, height: float, id: int = None):
         """
         Создание прямоугольника.
-        :param shape_id: Идентификатор фигуры
+        :param id: Идентификатор фигуры
         :param x: Координата X левого верхнего угла
         :param y: Координата Y левого верхнего угла
         :param width: Ширина прямоугольника
         :param height: Высота прямоугольника
         """
-        super().__init__(shape_id)
+        super().__init__(id)
         self.x = x
         self.y = y
         self.width = width
@@ -236,22 +237,23 @@ class Rectangle(Shape):
             "height": self.height
         }
 
+
 @register_shape("ellipse")
 class Ellipse(Shape):
     """
     Овал (эллипс). Задан координатами центра и радиусами по осям X и Y.
     """
 
-    def __init__(self, shape_id: int, x: float, y: float, xr: float, yr: float):
+    def __init__(self, x: float, y: float, xr: float, yr: float, id: int = None):
         """
         Создание эллипса.
-        :param shape_id: Идентификатор фигуры
+        :param id: Идентификатор фигуры
         :param x: Координата X центра
         :param y: Координата Y центра
         :param xr: Радиус по оси X
         :param yr: Радиус по оси Y
         """
-        super().__init__(shape_id)
+        super().__init__(id)
         self.x = x
         self.y = y
         self.xr = xr
