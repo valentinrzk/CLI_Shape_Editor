@@ -32,7 +32,7 @@ class ShapeFactory:
 
         numeric_args = list(map(float, args))
 
-        return shape_class(*numeric_args, shape_id=shape_id)
+        return shape_class(*numeric_args, id=shape_id)
 
     @staticmethod
     def create_from_dict(data: dict):
