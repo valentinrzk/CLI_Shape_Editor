@@ -116,3 +116,25 @@ class Square(Shape):
 
     def perimeter(self) -> float:
         return 4 * self.side
+
+@register_shape("rectangle")
+class Rectangle(Shape):
+    """
+    Прямоугольник.
+    """
+
+    def __init__(self, shape_id: int, x: float, y: float, width: float, height: float):
+        super().__init__(shape_id)
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+    def info(self) -> str:
+        return f"Rectangle(id={self.id}, corner=({self.x},{self.y}), width={self.width}, height={self.height})"
+
+    def area(self) -> float:
+        return self.width * self.height
+
+    def perimeter(self) -> float:
+        return 2 * (self.width + self.height)
