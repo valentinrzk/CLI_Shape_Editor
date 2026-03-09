@@ -12,8 +12,7 @@ from editor.file_service import ShapeFileService
 @register_command("help")
 class HelpCommand(Command):
     """
-    Показать список доступных команд.
-    Информация о командах берется из их docstring, а также из атрибута syntax для команд создания фигур.
+    Показать список доступных команд. Информация о командах берется из их docstring, а также из атрибута syntax для команд создания фигур.
     """
 
     def execute(self, args: list[str]) -> str:
@@ -61,6 +60,7 @@ class AddCommand(Command):
 
         return f"Создана фигура: {shape.info()}"
 
+
 @register_command("list")
 class ListCommand(Command):
     """
@@ -76,10 +76,11 @@ class ListCommand(Command):
 
         return "\n".join(s.info() for s in shapes)
 
+
 @register_command("delete")
 class DeleteCommand(Command):
     """
-    Команда удаления фигуры.
+    Команда удаления фигуры. Синтаксис: delete <shape_id>.
     """
 
     def execute(self, args: list[str]) -> str:
@@ -89,10 +90,11 @@ class DeleteCommand(Command):
 
         return f"Фигура {shape_id} удалена"
 
+
 @register_command("area")
 class AreaCommand(Command):
     """
-    Команда вычисления площади фигуры.
+    Команда вычисления площади фигуры. Синтаксис: area <shape_id>.
     """
 
     def execute(self, args: list[str]) -> str:
@@ -102,10 +104,11 @@ class AreaCommand(Command):
 
         return f"Площадь: {shape.area()}"
 
+
 @register_command("perimeter")
 class PerimeterCommand(Command):
     """
-    Команда вычисления периметра фигуры.
+    Команда вычисления периметра фигуры. Синтаксис: perimeter <shape_id>.
     """
 
     def execute(self, args: list[str]) -> str:
@@ -115,10 +118,11 @@ class PerimeterCommand(Command):
 
         return f"Периметр: {shape.perimeter()}"
 
+
 @register_command("clear")
 class ClearCommand(Command):
     """
-    Команда очистки всех фигур.
+    Удалить все фигуры из хранилища.
     """
 
     def execute(self, args: list[str]) -> str:
@@ -127,10 +131,11 @@ class ClearCommand(Command):
 
         return "Все фигуры удалены"
 
+
 @register_command("save")
 class SaveCommand(Command):
     """
-    Сохранить фигуры в файл.
+    Сохранить фигуры в файл json. Синтаксис: save <filename>.
     """
 
     def execute(self, args: list[str]) -> str:
@@ -147,10 +152,11 @@ class SaveCommand(Command):
 
         return f"Фигуры сохранены в {path}"
 
+
 @register_command("load")
 class LoadCommand(Command):
     """
-    Загрузить фигуры из файла.
+    Загрузить фигуры из файла json. Синтаксис: load <filename>. При загрузке текущий список фигур очищается, а новые фигуры загружаются из файла.
     """
 
     def execute(self, args: list[str]) -> str:
